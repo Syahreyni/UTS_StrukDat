@@ -1,0 +1,85 @@
+#include <iostream>
+
+using namespace std;
+
+class Queue {
+private:
+    int *arr;
+    int front;
+    int rear;
+    int capacity;
+
+public:
+    Queue(int capacity) {
+        this->capacity = capacity;
+        this->front = 0;
+        this->rear = -1;
+        this->arr = new int[capacity];
+    }
+
+    ~Queue() {
+        delete[] arr;
+    }
+
+    void enqueue(int value) {
+        if (rear == capacity - 1) {
+            cout << "Queue is full. Cannot enqueue " << value << endl;
+            return;
+        }
+        arr[++rear] = value;
+    }
+
+    int dequeue() {
+        if (front > rear) {
+            cout << "Queue is empty. Cannot dequeue." << endl;
+            return -1;
+        }
+        return arr[front++];
+    }
+
+    int peek() {
+        if (front > rear) {
+            cout << "Queue is empty." << endl;
+            return -1;
+        }
+        return arr[front];
+    }
+
+    bool isEmpty() {
+        return front > rear;
+    }
+
+    bool isFull() {
+        return rear == capacity - 1;
+    }
+
+    void printQueue() {
+        for (int i = front; i <= rear; i++) {
+            cout << arr[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    Queue queue(5);
+
+    queue.enqueue(1);
+    queue.enqueue(2);
+    queue.enqueue(3);
+    queue.printQueue(); // Output: 1 2 3
+
+    cout << "Dequeued: " << queue.dequeue() << endl; // Output: 1
+    queue.printQueue(); // Output: 2 3
+
+    cout << "Peek: " << queue.peek() << endl; // Output: 2
+
+    queue.enqueue(4);
+    queue.enqueue(5);
+    queue.printQueue(); // Output: 2 3 4 5
+
+    cout << "Is empty? " << (queue.isEmpty()? "Yes" : "No") << endl; // Output: No
+    cout << "Is full? " << (queue.isFull()? "Yes" : "No") << endl; // Output: Yes
+
+    return 0;
+}
